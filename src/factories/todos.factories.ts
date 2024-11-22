@@ -2,11 +2,18 @@ import { Router } from 'express';
 import { TodosController } from 'src/controllers/todos.controller';
 import { TodosRouter } from 'src/routers/todos.router';
 import { TodosService } from 'src/services/todos.service';
+import { createEntityRepository } from './typeorm.factories';
+import { TodosEntity } from 'src/entities/todos.entity';
 
 let todosServiceInstance: TodosService | null = null;
 
 export function createTodosService() {
-  if (!todosServiceInstance) return new TodosService();
+  if (!todosServiceInstance) {
+    const todosRepository = createEntityRepository(TodosEntity);
+
+    todosServiceInstance = new TodosService(todosRepository);
+    return todosServiceInstance;
+  }
   return todosServiceInstance;
 }
 

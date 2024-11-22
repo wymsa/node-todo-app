@@ -1,16 +1,20 @@
+import { TodosEntity } from 'src/entities/todos.entity';
+import { Repository } from 'typeorm';
+
 export class TodosService {
-  private todos: any[] = [];
+  constructor(private readonly todosRepository: Repository<TodosEntity>) {}
 
-  create(todoDto: any) {
-    this.todos.push(todoDto);
-    return todoDto;
+  async create(todoDto: any) {
+    const newTodo = this.todosRepository.create(todoDto);
+    console.log(newTodo);
+    return await this.todosRepository.save(newTodo);
   }
 
-  getAll() {
-    return this.todos;
+  async getAll() {
+    return await this.todosRepository.find();
   }
 
-  getOneById(id: number) {
-    return this.todos.find((todo) => todo.id === id);
+  async getOneById(id: number) {
+    return await this.todosRepository.findOne({ where: { id } });
   }
 }

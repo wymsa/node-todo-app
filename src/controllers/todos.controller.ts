@@ -2,8 +2,6 @@ import { Request, Response } from 'express';
 import { HttpException } from 'src/common/errors/http-exception.error';
 import { TodosService } from 'src/services/todos.service';
 
-const todosService = new TodosService();
-
 export class TodosController {
   private readonly todosService: TodosService;
 
@@ -11,26 +9,28 @@ export class TodosController {
     this.todosService = _todosService;
   }
 
-  create(request: Request<null, null, { id: number; title: string }>, response: Response) {
-    const { id, title } = request.body;
+  async create(request: Request<null, null, { title: string; isCompeted: boolean }>, response: Response) {
+    const { title, isCompeted } = request.body;
 
-    if (!id || !title) throw new HttpException(400, 'Bad request');
+    if (!title) throw new HttpException(400, 'Bad request');
 
-    const createdTodo = this.todosService.create({ id: id, title: title });
+    const dto = { title, isCompeted };
+
+    const createdTodo = await this.todosService.create(dto);
     response.status(201).json(createdTodo);
   }
 
-  getAll(request: Request, response: Response) {
-    const foundTodos = this.todosService.getAll();
+  async getAll(request: Request, response: Response) {
+    const foundTodos = await this.todosService.getAll();
     response.status(200).json(foundTodos);
   }
 
-  getOneById(request: Request<{ id: string }>, response: Response) {
+  async getOneById(request: Request<{ id: string }>, response: Response) {
     const { id } = request.params;
 
     if (!id) throw new HttpException(400, 'Bad request');
 
-    const foundTodo = this.todosService.getOneById(Number(id));
+    const foundTodo = await this.todosService.getOneById(Number(id));
     response.status(200).json(foundTodo);
   }
 }

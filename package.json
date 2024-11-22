@@ -2,7 +2,10 @@
   "name": "todo-list",
   "version": "1.0.0",
   "scripts": {
-    "start:dev": "tsx watch ./src/index.ts"
+    "start:dev": "tsx watch ./src/index.ts",
+    "migration:generate": "tsx ./node_modules/typeorm/cli.js migration:generate src/common/typeorm/migrations/%npm_config_name% -d src/common/typeorm/typeorm.config.ts",
+    "migration:run": "tsx ./node_modules/typeorm/cli.js migration:run -d src/common/typeorm/typeorm.config.ts",
+    "migration:revert": "tsx ./node_modules/typeorm/cli.js migration:revert -d src/common/typeorm/typeorm.config.ts"
   },
   "keywords": [],
   "author": "",
@@ -11,12 +14,16 @@
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.9.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
-    "tsx": "^4.19.2"
+    "pg": "^8.13.1",
+    "reflect-metadata": "^0.2.2",
+    "tsx": "^4.19.2",
+    "typeorm": "^0.3.20"
   },
   "type": "module"
 }
