@@ -3,11 +3,7 @@ import { HttpException } from 'src/common/errors/http-exception.error';
 import { TodosService } from 'src/services/todos.service';
 
 export class TodosController {
-  private readonly todosService: TodosService;
-
-  constructor(private readonly _todosService: TodosService) {
-    this.todosService = _todosService;
-  }
+  constructor(private readonly todosService: TodosService) {}
 
   async create(request: Request<null, null, { title: string; isCompeted: boolean }>, response: Response) {
     const { title, isCompeted } = request.body;

@@ -1,4 +1,4 @@
-import { BaseEntity, DataSource, EntityTarget } from 'typeorm';
+import { DataSource, EntityTarget } from 'typeorm';
 import DataSourceInstance from '../common/typeorm/typeorm.config';
 
 let dataSourceInstance: DataSource | null = null;
